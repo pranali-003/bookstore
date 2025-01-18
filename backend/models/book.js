@@ -1,6 +1,6 @@
-const mongoose =require("mongoose");
+const mongoose = require("mongoose");
 
-const book = new Mongoose.Schema({
+const book = new mongoose.Schema({
    url : {
     type :String,
     required : true,
@@ -17,7 +17,7 @@ const book = new Mongoose.Schema({
     type :Number,
     required : true,
    },
-   Desc : {
+   desc : {
     type :String,
     required : true,
    },
