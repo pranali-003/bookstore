@@ -2,9 +2,9 @@ const router = require("express").Router();
 const User  = require('../models/user')
 const bcrypt  = require("bcryptjs");
 const jwt =  require("jsonwebtoken");
-const authenticationToken = require("./userAuth")
-//signup
+const {authenticationToken} = require("./userAuth")
 
+//sign-in
 
 router.post("/sign-in", async(req,res)=>{
     try{
@@ -34,6 +34,9 @@ router.post("/sign-in", async(req,res)=>{
         return res.status(500).json({message:"error occurred"});
     }
 })
+
+//signup
+
 router.post("/sign-up", async(req,res)=>{
     try{
         const {username,password,email,address} = req.body;
@@ -74,17 +77,32 @@ router.post("/sign-up", async(req,res)=>{
     }
 })
 
-// router.get("/get-user-info", authenticationToken, async(req,res)=>{
-//     try{
-//         const {id} =req.headers;
-//         const data = await User.findById(id);
-//         return res.status(200).json(data);
-//     }catch(error){
-//         console.log(error);
-//         return res.status(500).json({message: "Internal server Error"});
-//     }
-// })
+//get user-information
 
+router.get("/get-user-info", authenticationToken, async(req,res)=>{
+    try{
+        const {id} =req.headers;
+        const data = await User.findById(id).select("-password");
+        return res.status(200).json(data);
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({message: "Internal server Error"});
+    }
+})
+
+// update address
+
+router.put("/update-address", authenticationToken, async(req,res)=>{
+    try{
+        const {id} = req.headers;
+        const {address} =  req.body;
+        await User.findByIdAndUpdate(id,{address: address});
+        return res.status(200).json({message:"Address updated Successfully!"});
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({message: "Internal server Error"});
+    }
+})
 
 
 module.exports = router;
