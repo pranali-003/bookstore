@@ -94,20 +94,22 @@ router.get("/get-recent-books", authenticationToken, async(req,res)=>{
     }
 })
 
-module.exports = router;
 
 // get book by id
 
 router.get("/get-book-by-id/:id", authenticationToken, async(req,res)=>{
-    try{
-        const {id} =req.params;
-        const book = await Book.findById(id);
-        return res.json({
+  try{
+    const {id} =req.params;
+    const book = await Book.findById(id);
+    return res.json({
             status : "Success",
             data : book,
-        });
+          });
 
     }catch(error){
-        return res.status(500).json({message:"An error Occurred."})
+      return res.status(500).json({message:"An error Occurred."})
     }
 })
+
+
+module.exports = router;
